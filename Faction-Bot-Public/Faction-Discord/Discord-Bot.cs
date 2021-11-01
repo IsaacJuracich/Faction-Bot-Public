@@ -11,8 +11,6 @@ namespace Faction_Bot_Public.Faction_Discord {
         private static CommandService _commands = new CommandService();
         private static IServiceProvider _services;
         public static DiscordSocketClient bot;
-        public static string seconds;
-
         public static async Task Start() {
             DiscordSocketConfig config = new DiscordSocketConfig();
             config.MessageCacheSize = 100;
