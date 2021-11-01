@@ -1,4 +1,5 @@
 ﻿using Faction_Bot_Public.Faction_Discord;
+using Faction_Bot_Public.Faction_Settings;
 using MinecraftClient;
 using MinecraftClient.Protocol;
 using MinecraftClient.Protocol.Handlers.Forge;
@@ -24,13 +25,19 @@ namespace Faction_Bot_Public {
         public static readonly string BuildInfo = null;
         private static Thread offlinePrompt = null;
         private static bool useMcVersionOnce = false;
+        // # Faction-Bot Variables & Functions # //
+        public static INI config = new INI("");
+        public static void discordStart() => Discord_Bot.Start().GetAwaiter().GetResult();
+
+        // # End # //
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool SetConsoleIcon(IntPtr hIcon);
 
         [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
-        public static void discordStart() => Discord_Bot.Start().GetAwaiter().GetResult();
         static void Main(string[] args) {
+            return;
+            // Will add Minecraft-API when all of Discord Guild is ready
             ConsoleIO.LogPrefix = "";
             if (args.Length == 1 && args[0] == "--keyboard-debug") {
                 ConsoleIO.WriteLine("Keyboard debug mode: Press any key to display info");
@@ -88,7 +95,7 @@ namespace Faction_Bot_Public {
                 && !useBrowser) {
                 RequestPassword();
             }
-            Program.ChatBots();
+            ChatBots();
             startupargs = args;
             InitializeClient();
         }
@@ -190,8 +197,10 @@ namespace Faction_Bot_Public {
                             Settings.isBotLaunched = true;
                         }
                         if (Settings.ConsoleTitle != "") {
-                            Console.Title = $"";
-                            System.Drawing.Bitmap skin = new System.Drawing.Bitmap("!utils\\UJS91.png");
+                            Console.Title = $"Faction-Bot-Public";
+                            System.Drawing.Bitmap skin = null;
+                            return;
+                            // Add ICON Later
                             SetWindowIcon(System.Drawing.Icon.FromHandle(skin.GetHicon()));
                             SetConsoleIcon(skin.GetHicon());
                         }
