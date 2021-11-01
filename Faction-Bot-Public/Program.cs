@@ -26,7 +26,7 @@ namespace Faction_Bot_Public {
         private static Thread offlinePrompt = null;
         private static bool useMcVersionOnce = false;
         // # Faction-Bot Variables & Functions # //
-        public static INI config = new INI("");
+        public static Thread discord;
         public static void discordStart() => Discord_Bot.Start().GetAwaiter().GetResult();
 
         // # End # //
@@ -36,6 +36,8 @@ namespace Faction_Bot_Public {
         [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
         static void Main(string[] args) {
+            discord = new Thread(new ThreadStart(discordStart));
+            discord.Start();
             return;
             // Will add Minecraft-API when all of Discord Guild is ready
             ConsoleIO.LogPrefix = "";
