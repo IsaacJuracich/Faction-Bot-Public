@@ -23,7 +23,7 @@ namespace Faction_Bot_Public.Faction_Discord {
             return new EmbedBuilder().WithColor(71, 108, 215).WithCurrentTimestamp();
         }
         public static bool doesConfigExist(ulong gId) {
-            Uri folderLink = new Uri("https://mega.nz/folder/8d1GQbBL#Os6d2DBL2rgwEzNOEMhUsA");
+            Uri folderLink = new Uri("");
             IEnumerable<INode> nodes = Discord_Bot.client.GetNodesFromLink(folderLink);
             foreach (INode node in nodes.Where(x => x.Type == NodeType.File)) {
                 if (node.Name == $"{gId}.ini") {
