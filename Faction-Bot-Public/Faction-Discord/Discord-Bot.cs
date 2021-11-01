@@ -36,7 +36,7 @@ namespace Faction_Bot_Public.Faction_Discord {
         private static async Task CommandHandler(SocketMessage arg) {
             var message = arg as SocketUserMessage;
             int argPos = 0;
-            if (message.HasStringPrefix(".", ref argPos) || message.HasMentionPrefix(bot.CurrentUser, ref argPos)) {
+            if (message.HasStringPrefix("", ref argPos) || message.HasMentionPrefix(bot.CurrentUser, ref argPos)) {
                 var context = new SocketCommandContext(bot, message);
                 var result = await _commands.ExecuteAsync(context, argPos, _services);
             }
