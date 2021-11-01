@@ -27,8 +27,9 @@ namespace Faction_Bot_Public.Faction_Discord {
                         if (node.Name == $"{Context.Guild.Id}.ini") {
                             Discord_Bot.client.Delete(node, false);
                             await ReplyAsync(embed: Discord_Functions.embed().WithDescription($"{Context.User.Mention}, Config has been deleted, Do you wish to restart?").Build());
-                            var response2 = await NextMessageAsync(true, true, TimeSpan.FromSeconds(15));
+                            var response2 = await NextMessageAsync(true, true);
                             if (response2.Content.ToLower() == "yes") {
+                                Discord_Bot.collection.Add(Context.User as SocketGuildUser);
                                 await Context.User.SendMessageAsync(embed: Discord_Functions.embed().WithTitle("Question 1").WithDescription($"**What would you like your discord_prefix to be?**").Build());
                                 var discord_prefix = await NextMessageAsync(true, true);
                                 await Context.User.SendMessageAsync(embed: Discord_Functions.embed().WithTitle("Question 2").WithDescription($"**Would you like to add any admin_users right now? [If So, list all of their IDS]**").Build());
@@ -36,6 +37,8 @@ namespace Faction_Bot_Public.Faction_Discord {
                                 await Context.User.SendMessageAsync(embed: Discord_Functions.embed().WithTitle("Question 1").WithDescription($"**What would you like the command_cooldown to be? [0-10] seconds**").Build());
                                 var cmd_cooldown = await NextMessageAsync(true, true);
                                 await Context.User.SendMessageAsync(embed: Discord_Functions.embed().WithTitle("GuildSetup Finished").WithDescription($"**There is still alot more to setup, go through the set pages and manually do it**").Build());
+                                Discord_Functions.generateConfigFile(Context.Guild.Id, discord_prefix.Content, admin_users.Content.Split(' ').ToList(), cmd_cooldown.Content);
+                                Discord_Bot.collection.Remove(Context.User as SocketGuildUser);
 
                             }
                             if (response2.Content.ToLower() == "no") {
@@ -56,6 +59,7 @@ namespace Faction_Bot_Public.Faction_Discord {
                 var cmd_cooldown = await NextMessageAsync(true, false);
                 await Context.User.SendMessageAsync(embed: Discord_Functions.embed().WithTitle("GuildSetup Finished").WithDescription($"**There is still alot more to setup, go through the set pages and manually do it**").Build());
                 Console.WriteLine($"{discord_prefix.Content} | {admin_users.Content} | {cmd_cooldown.Content}");
+                Discord_Functions.generateConfigFile(Context.Guild.Id, discord_prefix.Content, admin_users.Content.Split(' ').ToList(), cmd_cooldown.Content);
                 Discord_Bot.collection.Remove(Context.User as SocketGuildUser);
             }
         }
