@@ -1,0 +1,23 @@
+{
+  "name": "faction-bot-public",
+  "version": "1.0.0",
+  "description": ">Bot is made in C# utilizing [MCC](https://github.com/MCCTeam/Minecraft-Console-Client) & [Discord.Addons](https://github.com/foxbot/Discord.Addons.Interactive)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IsaacJuracich/Faction-Bot-Public.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IsaacJuracich/Faction-Bot-Public/issues"
+  },
+  "homepage": "https://github.com/IsaacJuracich/Faction-Bot-Public#readme",
+  "dependencies": {
+    "discord.js": "^13.3.1"
+  }
+}
