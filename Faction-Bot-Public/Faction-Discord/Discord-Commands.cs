@@ -8,5 +8,9 @@ using System.Threading.Tasks;
 
 namespace Faction_Bot_Public.Faction_Discord {
     public class Discord_Commands : InteractiveBase<SocketCommandContext> {
+        [Command("test")]
+        public async Task TestAsync() {
+            await NextMessageAsync(true, false);
+        }
     }
 }

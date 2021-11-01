@@ -33,3 +33,5 @@ C:\Users\aj550\source\repos\Faction-Bot-Public\Faction-Bot-Public\obj\Debug\Fact
 C:\Users\aj550\source\repos\Faction-Bot-Public\Faction-Bot-Public\obj\Debug\Faction-Bot-Public.csproj.CoreCompileInputs.cache
 C:\Users\aj550\source\repos\Faction-Bot-Public\Faction-Bot-Public\obj\Debug\Faction-Bot-Public.exe
 C:\Users\aj550\source\repos\Faction-Bot-Public\Faction-Bot-Public\obj\Debug\Faction-Bot-Public.pdb
+C:\Users\aj550\source\repos\Faction-Bot-Public\Faction-Bot-Public\bin\Debug\MegaApiClient.dll
+C:\Users\aj550\source\repos\Faction-Bot-Public\Faction-Bot-Public\bin\Debug\MegaApiClient.xml

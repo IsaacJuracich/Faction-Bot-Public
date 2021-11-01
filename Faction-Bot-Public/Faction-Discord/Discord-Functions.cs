@@ -19,5 +19,8 @@ namespace Faction_Bot_Public.Faction_Discord {
             }
             return value;
         }
+        public static EmbedBuilder embed() {
+            return new EmbedBuilder().WithColor(71, 108, 215).WithCurrentTimestamp();
+        }
     }
 }
