@@ -1,2 +1,1 @@
-# Faction-Bot-Public
- Open Source Faction Bot
+## Open Source Faction Bot
