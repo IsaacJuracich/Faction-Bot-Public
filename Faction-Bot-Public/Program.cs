@@ -1,5 +1,4 @@
 ﻿using Faction_Bot_Public.Faction_Discord;
-using Faction_Bot_Public.Faction_Settings;
 using MinecraftClient;
 using MinecraftClient.Protocol;
 using MinecraftClient.Protocol.Handlers.Forge;
