@@ -1,0 +1,16 @@
+{
+  "$type": "Faction_Bot_Public.Faction_Settings.Settings, Faction-Bot-Public",
+  "d_prefix": ".",
+  "d_adminusers": {
+    "$type": "System.Collections.Generic.List`1[[System.UInt64, mscorlib]], mscorlib",
+    "$values": []
+  },
+  "d_cmdcooldown": 0,
+  "m_email": null,
+  "m_password": null,
+  "m_logintype": null,
+  "m_serverip": null,
+  "m_version": null,
+  "m_renderdistance": null,
+  "m_cmdcooldown": 0
+}

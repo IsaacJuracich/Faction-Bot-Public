@@ -10,12 +10,14 @@ namespace Faction_Bot_Public.Faction_Utils {
         public string player;
         public DateTime time;
         public string[] args;
-        
+        public static List<SocketMinecraftMessage> socketcollection = new List<SocketMinecraftMessage>();
+
         public SocketMinecraftMessage(string content, string player, DateTime time, string[] args) {
             this.content = content;
             this.player = player;
             this.time = time;
             this.args = args;
+            socketcollection.Add(new SocketMinecraftMessage(content, player, time, args));
         }
     }
 }
