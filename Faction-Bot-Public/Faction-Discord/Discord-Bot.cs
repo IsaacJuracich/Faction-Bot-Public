@@ -1,12 +1,14 @@
-﻿using CG.Web.MegaApiClient;
-using Discord;
+﻿using Discord;
 using Discord.Addons.Interactive;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -15,16 +17,15 @@ namespace Faction_Bot_Public.Faction_Discord {
         private static CommandService _commands = new CommandService();
         private static IServiceProvider _services;
         public static DiscordSocketClient bot;
-        public static MegaApiClient client = new MegaApiClient();
         public static string prefix = "fbp";
         public static List<SocketGuildUser> collection = new List<SocketGuildUser>();
         public static async Task Start() {
-            client.Login("", "");
             DiscordSocketConfig config = new DiscordSocketConfig();
             config.MessageCacheSize = 100;
+            config.AlwaysDownloadUsers = true;
             bot = new DiscordSocketClient(config);
             await RegisterCommands();
-            await bot.LoginAsync(Discord.TokenType.Bot, "", true);
+            await bot.LoginAsync(Discord.TokenType.Bot, "OTA0NjM0NTgxMjA5MjE5MDg0.YX-Ymw.R1jA6EGStEVjGVqQ-uDyh7HPePE", true);
             await bot.StartAsync();
             await bot.SetActivityAsync(new Game($"over {bot.Guilds.Count()} Guilds", ActivityType.Watching));
             await Task.Delay(-1);
@@ -49,23 +50,27 @@ namespace Faction_Bot_Public.Faction_Discord {
         private static async Task JoinedGuild(SocketGuild arg) {
             Console.WriteLine($"[JoinedGuild] [{arg.Name}|ID:{arg.Id}] | Time: {DateTime.Now} | Owner: {arg.Owner}[{arg.Owner.Id}]");
             await arg.Owner.SendMessageAsync(embed: Discord_Functions.embed().WithDescription("**Guild Setup**\nYou will be asked a series of **questions** to setup this bot. You must respond to all of the questions for this to be **successful\n**Type: **`fbp-setup`** inside of your guild to get started.").Build());
-            prefix = "fbp";
-            return;
-            System.IO.File.WriteAllText($"dump\\{arg.Id}.ini", "");
-            IEnumerable<INode> nodes = client.GetNodes();
-            INode parent = nodes.Single(n => n.Type == NodeType.Root);
-            client.UploadFile($"dump\\{arg.Id}.ini", parent);
-            System.IO.File.Delete($"dump\\{arg.Id}.ini");
-            Console.WriteLine($"[GuildCreation] {arg.Id}.ini has been created and uploaded server side");
         }
 
         private static async Task CommandHandler(SocketMessage arg) {
-            if (arg == null) return;
+            if (arg == null || arg.Channel is IPrivateChannel) return;
             var message = arg as SocketUserMessage;
-            int argPos = 0;       
+            int argPos = 0;
+            var context = new SocketCommandContext(bot, message);
+            if (Discord_Functions.tryDownload($"https://orbitdev.tech/FBP/database/{context.Guild.Id}.json")) {
+                var c = JsonConvert.DeserializeObject<Faction_Settings.Settings>(new WebClient().DownloadString($"https://orbitdev.tech/FBP/database/{context.Guild.Id}.json"));
+                prefix = c.d_prefix;
+                if (prefix == "{prefix}") {
+                    prefix = "fbp";
+                    await context.Channel.SendMessageAsync(embed: Discord_Functions.embed().WithDescription($"{context.User.Mention}, There is no prefix set | Default value: **fbp**").Build());
+                }
+            }
+            if (!Discord_Functions.tryDownload($"https://orbitdev.tech/FBP/database/{context.Guild.Id}.json"))
+                prefix = "fbp";
             if (message.HasStringPrefix(prefix, ref argPos) || message.HasMentionPrefix(bot.CurrentUser, ref argPos)) {
-                var context = new SocketCommandContext(bot, message);
                 var result = await _commands.ExecuteAsync(context, argPos, _services);
+                if (!result.IsSuccess)
+                    Console.WriteLine(result.ErrorReason);
             }
         }
     }

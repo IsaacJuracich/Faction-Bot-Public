@@ -6,11 +6,28 @@
     "$values": []
   },
   "d_cmdcooldown": 0,
+  "d_serverchatID": 0,
+  "d_serverchatBot": false,
   "m_email": null,
   "m_password": null,
   "m_logintype": null,
   "m_serverip": null,
   "m_version": null,
   "m_renderdistance": null,
-  "m_cmdcooldown": 0
+  "m_cmdcooldown": 0,
+  "m_chatformat": null,
+  "m_hubcmd": null,
+  "premium": false,
+  "socketUser": {
+    "$type": "System.Collections.Generic.List`1[[Faction_Bot_Public.Server_Socket.SocketUser, Faction-Bot-Public]], mscorlib",
+    "$values": [
+      {
+        "$type": "Faction_Bot_Public.Server_Socket.SocketUser, Faction-Bot-Public",
+        "whitelisted": true,
+        "discordId": 862079377759666196,
+        "ip": ""
+      }
+    ]
+  },
+  "d_ownerId": 862079377759666196
 }

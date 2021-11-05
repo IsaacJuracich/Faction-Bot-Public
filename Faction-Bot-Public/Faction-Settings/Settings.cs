@@ -18,8 +18,12 @@ namespace Faction_Bot_Public.Faction_Settings {
         public string m_version;
         public string m_renderdistance;
         public int m_cmdcooldown;
-        
-        public Settings(string prefix, List<ulong> adminusers, int cooldown) {
+        public string m_chatformat;
+        public string m_hubcmd;
+        public bool premium;
+        public List<Server_Socket.SocketUser> socketUser;
+        public ulong d_ownerId;
+        public Settings(string prefix, List<ulong> adminusers, int cooldown, ulong ownerId) {
             d_prefix = prefix;
             d_adminusers = adminusers;
             d_cmdcooldown = cooldown;
@@ -32,6 +36,12 @@ namespace Faction_Bot_Public.Faction_Settings {
             m_version = null;
             m_renderdistance = null;
             m_cmdcooldown = 0;
+            m_chatformat = null;
+            m_hubcmd = null;
+            premium = false;
+            socketUser = new List<Server_Socket.SocketUser>();
+            socketUser.Add(new Server_Socket.SocketUser(true, ownerId, ""));
+            d_ownerId = ownerId;
         }
     }
 }

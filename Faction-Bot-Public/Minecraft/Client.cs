@@ -17,9 +17,9 @@ using System.Threading.Tasks;
 
 namespace Faction_Bot_Public.Minecraft {
     class Client {
+        public static ulong gId;
         public static string[] args;
         public static McClient client;
-        public static IMinecraftCom handler;
         public static string[] startupargs;
         public const string Version = MCHighestVersion;
         public const string MCLowestVersion = "1.4.6";
@@ -27,11 +27,13 @@ namespace Faction_Bot_Public.Minecraft {
         public static readonly string BuildInfo = null;
         private static Thread offlinePrompt = null;
         private static bool useMcVersionOnce = false;
+        private static Faction_Bots.Faction_Main main;
 
         [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
         public static void run(ulong guildID) {
-            var c = JsonConvert.DeserializeObject<Faction_Settings.Settings>(new WebClient().DownloadString($""));
+            gId = guildID;
+            var c = JsonConvert.DeserializeObject<Faction_Settings.Settings>(new WebClient().DownloadString($"https://orbitdev.tech/FBP/database/{guildID}.json"));
             ConsoleIO.LogPrefix = "";
             if (args.Length >= 1 && System.IO.File.Exists(args[0]) && System.IO.Path.GetExtension(args[0]).ToLower() == ".ini")
             {
@@ -68,12 +70,12 @@ namespace Faction_Bot_Public.Minecraft {
             startupargs = args;
             InitializeClient();
         }
-        public static async void ChatBots()
-        {
-            while (true)
-            {
-                if (Settings.isBotLaunched)
-                {
+        public static async void ChatBots() {
+            while (true) {
+                if (Settings.isBotLaunched) {
+                    Console.WriteLine("ok");
+                    client.BotLoad(main = new Faction_Bots.Faction_Main());
+                    break;
                 }
                 await Task.Delay(100);
             }
