@@ -46,11 +46,20 @@ namespace Faction_Bot_Public.Minecraft {
                 Settings.LoadSettings("MinecraftClient.ini");
             else Settings.WriteDefaultSettings("MinecraftClient.ini");
             Translations.LoadExternalTranslationFile(Settings.Language);
+            Console.WriteLine(c.m_email);
+            if (c.m_email == "null")
+                new WebClient().DownloadString($"https://orbitdev.tech/FBP/output-buffer.php?userId={c.d_ownerId}&dId={guildID}&code={Faction_Discord.Discord_Commands.sessionID}&data=Minecraft Email is null");
             Settings.Login = c.m_email;
+            if (c.m_password == "null")
+                new WebClient().DownloadString($"https://orbitdev.tech/FBP/output-buffer.php?userId={c.d_ownerId}&dId={guildID}&code={Faction_Discord.Discord_Commands.sessionID}&data=Minecraft Password is null");
             Settings.Password = c.m_password;
+            if (c.m_serverip == "null")
+                new WebClient().DownloadString($"https://orbitdev.tech/FBP/output-buffer.php?userId={c.d_ownerId}&dId={guildID}&code={Faction_Discord.Discord_Commands.sessionID}&data=Minecraft ServerIP is null");
             Settings.ServerIP = c.m_serverip;
             Settings.LoginMethod = c.m_logintype;
             Settings.MCSettings_RenderDistance = 2;
+            if (c.m_version == "null")
+                new WebClient().DownloadString($"https://orbitdev.tech/FBP/output-buffer.php?userId={c.d_ownerId}&dId={guildID}&code={Faction_Discord.Discord_Commands.sessionID}&data=Minecraft Version is null");
             Settings.ServerVersion = c.m_version;
             if (Settings.ConsoleTitle != "")
             {

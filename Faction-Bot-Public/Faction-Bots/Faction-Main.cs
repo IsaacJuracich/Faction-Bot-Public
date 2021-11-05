@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace Faction_Bot_Public.Faction_Bots {
     public class Faction_Main : ChatBot {
+        public Random random = new Random();
         public override void Initialize() {
-            Server_Socket.SocketUpload.socketUpload();
+            Server_Socket.SocketUpload.socketUpload(); ;
         }
-        public override async void GetText(string text) {
+        public override void GetText(string text) {
             text = GetVerbatim(text).Replace("\n", "");
             if (text.Trim().Length < 1 || text == null || text.Replace(" ", "").Length < 1) return;
             Server_Socket.SocketUpload.tosocket = Server_Socket.SocketUpload.tosocket + text + "\n";

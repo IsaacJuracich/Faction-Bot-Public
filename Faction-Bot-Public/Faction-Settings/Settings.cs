@@ -29,11 +29,11 @@ namespace Faction_Bot_Public.Faction_Settings {
             d_cmdcooldown = cooldown;
             d_serverchatBot = false;
             d_serverchatID = 0;
-            m_email = null;
-            m_password = null;
-            m_logintype = null;
-            m_serverip = null;
-            m_version = null;
+            m_email = "null";
+            m_password = "null";
+            m_logintype = "mojang";
+            m_serverip = "null";
+            m_version = "null";
             m_renderdistance = null;
             m_cmdcooldown = 0;
             m_chatformat = null;
