@@ -25,7 +25,7 @@ namespace Faction_Bot_Public.Faction_Discord {
             config.AlwaysDownloadUsers = true;
             bot = new DiscordSocketClient(config);
             await RegisterCommands();
-            await bot.LoginAsync(Discord.TokenType.Bot, "OTA0NjM0NTgxMjA5MjE5MDg0.YX-Ymw.R1jA6EGStEVjGVqQ-uDyh7HPePE", true);
+            await bot.LoginAsync(Discord.TokenType.Bot, "", true);
             await bot.StartAsync();
             await bot.SetActivityAsync(new Game($"over {bot.Guilds.Count()} Guilds", ActivityType.Watching));
             await Task.Delay(-1);
