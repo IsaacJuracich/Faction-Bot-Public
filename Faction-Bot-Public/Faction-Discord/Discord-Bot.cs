@@ -25,7 +25,7 @@ namespace Faction_Bot_Public.Faction_Discord {
             config.AlwaysDownloadUsers = true;
             bot = new DiscordSocketClient(config);
             await RegisterCommands();
-            await bot.LoginAsync(Discord.TokenType.Bot, "", true);
+            await bot.LoginAsync(Discord.TokenType.Bot, "OTA0NjM0NTgxMjA5MjE5MDg0.YX-Ymw.78764WerQhlomBwBx--cqmgmMTk", true);
             await bot.StartAsync();
             await bot.SetActivityAsync(new Game($"over {bot.Guilds.Count()} Guilds", ActivityType.Watching));
             await Task.Delay(-1);
@@ -40,12 +40,6 @@ namespace Faction_Bot_Public.Faction_Discord {
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
             bot.MessageReceived += CommandHandler;
             bot.JoinedGuild += JoinedGuild;
-            bot.MessageReceived += GuildQuestions;
-        }
-        private static async Task GuildQuestions(SocketMessage arg) {
-            if (arg.Channel is ITextChannel && collection.Contains(arg.Author)) {
-                //await arg.Author.SendMessageAsync(embed: Discord_Functions.embed().WithTitle("GuildSetup ").WithDescription($"Continue the GuildSetup in your **DMS**").Build());
-            }
         }
         private static async Task JoinedGuild(SocketGuild arg) {
             Console.WriteLine($"[JoinedGuild] [{arg.Name}|ID:{arg.Id}] | Time: {DateTime.Now} | Owner: {arg.Owner}[{arg.Owner.Id}]");
@@ -53,25 +47,31 @@ namespace Faction_Bot_Public.Faction_Discord {
         }
 
         private static async Task CommandHandler(SocketMessage arg) {
-            if (arg == null || arg.Channel is IPrivateChannel) return;
-            var message = arg as SocketUserMessage;
-            int argPos = 0;
-            var context = new SocketCommandContext(bot, message);
-            if (Discord_Functions.tryDownload($"https://orbitdev.tech/FBP/database/{context.Guild.Id}.json")) {
-                var c = JsonConvert.DeserializeObject<Faction_Settings.Settings>(new WebClient().DownloadString($"https://orbitdev.tech/FBP/database/{context.Guild.Id}.json"));
-                prefix = c.d_prefix;
-                if (prefix == "{prefix}") {
+            try {
+                if (arg == null || arg.Channel is IPrivateChannel) return;
+                var message = arg as SocketUserMessage;
+                int argPos = 0;
+                var context = new SocketCommandContext(bot, message);
+                if (Discord_Functions.tryDownload($"https://orbitdev.tech/FBP/database/{context.Guild.Id}.json")) {
+                    if (Server_Socket.SocketReader.socketReturn(context.Guild.Id) == null)
+                        Server_Socket.SocketReader.sockets.Add(new Server_Socket.SocketReader(context.Guild.Id, "1234"));
+                    var socket = Server_Socket.SocketReader.socketReturn(context.Guild.Id);
+                    var c = JsonConvert.DeserializeObject<Faction_Settings.Settings>(new WebClient().DownloadString($"https://orbitdev.tech/FBP/database/{context.Guild.Id}.json"));
+                    prefix = c.d_prefix;
+                    if (prefix == "{prefix}") {
+                        prefix = "fbp";
+                        await context.Channel.SendMessageAsync(embed: Discord_Functions.embed().WithDescription($"{context.User.Mention}, There is no prefix set | Default value: **fbp**").Build());
+                    }
+                }
+                if (!Discord_Functions.tryDownload($"https://orbitdev.tech/FBP/database/{context.Guild.Id}.json"))
                     prefix = "fbp";
-                    await context.Channel.SendMessageAsync(embed: Discord_Functions.embed().WithDescription($"{context.User.Mention}, There is no prefix set | Default value: **fbp**").Build());
+                if (message.HasStringPrefix(prefix, ref argPos) || message.HasMentionPrefix(bot.CurrentUser, ref argPos)) {
+                    var result = await _commands.ExecuteAsync(context, argPos, _services);
+                    if (!result.IsSuccess)
+                        Console.WriteLine($"[StackTrace] | {result.ErrorReason}");
                 }
             }
-            if (!Discord_Functions.tryDownload($"https://orbitdev.tech/FBP/database/{context.Guild.Id}.json"))
-                prefix = "fbp";
-            if (message.HasStringPrefix(prefix, ref argPos) || message.HasMentionPrefix(bot.CurrentUser, ref argPos)) {
-                var result = await _commands.ExecuteAsync(context, argPos, _services);
-                if (!result.IsSuccess)
-                    Console.WriteLine(result.ErrorReason);
-            }
+            catch (Exception e) { Console.WriteLine(e.StackTrace); }
         }
     }
 }

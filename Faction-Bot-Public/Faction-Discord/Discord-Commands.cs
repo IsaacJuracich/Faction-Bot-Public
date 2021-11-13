@@ -16,7 +16,6 @@ namespace Faction_Bot_Public.Faction_Discord {
     public class Discord_Commands : InteractiveBase<SocketCommandContext> {
         public static WebClient wc = new WebClient();
         public Random random = new Random();
-        public static string sessionID = null;
         [Command("setup", RunMode = RunMode.Async)] 
         public async Task SetupAsync() {
             try {
@@ -112,12 +111,16 @@ namespace Faction_Bot_Public.Faction_Discord {
             if (c.d_adminusers.Contains(Context.User.Id)) {
                 if (c.premium) {
                     if (Server_Socket.SocketUser.socketuserExist(Context.Guild.Id, Context.User.Id)) {
-                        var chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-                        string  sessionId = new string(chars.Select(i => chars[random.Next(chars.Length)]).Take(6).ToArray());
-                        new WebClient().DownloadString($"https://orbitdev.tech/FBP/sessionHandler.php?sessionId={sessionId}");
-                        string link = $"https://orbitdev.tech/FBP/output-buffer.php?userId={Context.User.Id}&dId={Context.Guild.Id}&code={sessionId}&data=null";
-                        await Context.User.SendMessageAsync(embed: Discord_Functions.embed().WithAuthor($"Ouput-Buffer Session Created").WithDescription($"[Ouput-Buffer]({link})").Build());
-                        sessionID = sessionId;
+                        try {
+                            var chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+                            string sessionId = new string(chars.Select(i => chars[random.Next(chars.Length)]).Take(6).ToArray());
+                            new WebClient().DownloadString($"https://orbitdev.tech/FBP/sessionHandler.php?sessionId={sessionId}");
+                            string link = $"https://orbitdev.tech/FBP/output-buffer.php?userId={Context.User.Id}&dId={Context.Guild.Id}&code={sessionId}&data=null";
+                            await Context.User.SendMessageAsync(embed: Discord_Functions.embed().WithAuthor($"Ouput-Buffer Session Created").WithDescription($"[Ouput-Buffer]({link})").Build());
+                            var socket = Server_Socket.SocketReader.socketReturn(Context.Guild.Id);
+                            socket.sessionId = sessionId;
+                        }
+                        catch (Exception e) { Console.WriteLine(e.StackTrace); }
                     }
                     else {
                         await ReplyAsync(embed: Discord_Functions.embed().WithDescription($"{Context.User.Mention}, You are not a **socket_user**").Build());

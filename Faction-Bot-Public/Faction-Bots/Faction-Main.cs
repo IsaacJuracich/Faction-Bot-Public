@@ -19,8 +19,8 @@ namespace Faction_Bot_Public.Faction_Bots {
             Server_Socket.SocketUpload.tosocket = Server_Socket.SocketUpload.tosocket + text + "\n";
         }
         public override void AfterGameJoined() {
-            var c = JsonConvert.DeserializeObject<Faction_Settings.Settings>(new WebClient().DownloadString($"https://orbitdev.tech/FBP/database/{Minecraft.Client.gId}.json"));
-            SendText(c.m_hubcmd);
+            //to fix var c = JsonConvert.DeserializeObject<Faction_Settings.Settings>(new WebClient().DownloadString($"https://orbitdev.tech/FBP/database/{Minecraft.Client.gId}.json"));
+            // SendText(c.m_hubcmd);
         }
     }
 }

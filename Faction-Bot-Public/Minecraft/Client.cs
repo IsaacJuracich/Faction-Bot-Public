@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 
 namespace Faction_Bot_Public.Minecraft {
     class Client {
-        public static ulong gId;
         public static string[] args;
         public static McClient client;
         public static string[] startupargs;
@@ -32,7 +31,8 @@ namespace Faction_Bot_Public.Minecraft {
         [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
         public static void run(ulong guildID) {
-            gId = guildID;
+            if (Server_Socket.SocketReader.socketReturn(guildID) == null)
+                Server_Socket.SocketReader.sockets.Add(new Server_Socket.SocketReader(guildID, null));
             var c = JsonConvert.DeserializeObject<Faction_Settings.Settings>(new WebClient().DownloadString($"https://orbitdev.tech/FBP/database/{guildID}.json"));
             ConsoleIO.LogPrefix = "";
             if (args.Length >= 1 && System.IO.File.Exists(args[0]) && System.IO.Path.GetExtension(args[0]).ToLower() == ".ini")
@@ -48,18 +48,18 @@ namespace Faction_Bot_Public.Minecraft {
             Translations.LoadExternalTranslationFile(Settings.Language);
             Console.WriteLine(c.m_email);
             if (c.m_email == "null")
-                new WebClient().DownloadString($"https://orbitdev.tech/FBP/output-buffer.php?userId={c.d_ownerId}&dId={guildID}&code={Faction_Discord.Discord_Commands.sessionID}&data=Minecraft Email is null");
+                new WebClient().DownloadString($"https://orbitdev.tech/FBP/output-buffer.php?userId={c.d_ownerId}&dId={guildID}&code={Server_Socket.SocketReader.socketReturn(guildID).sessionId}&data=Minecraft Email is null");
             Settings.Login = c.m_email;
             if (c.m_password == "null")
-                new WebClient().DownloadString($"https://orbitdev.tech/FBP/output-buffer.php?userId={c.d_ownerId}&dId={guildID}&code={Faction_Discord.Discord_Commands.sessionID}&data=Minecraft Password is null");
+                new WebClient().DownloadString($"https://orbitdev.tech/FBP/output-buffer.php?userId={c.d_ownerId}&dId={guildID}&code={Server_Socket.SocketReader.socketReturn(guildID).sessionId}&data=Minecraft Password is null");
             Settings.Password = c.m_password;
             if (c.m_serverip == "null")
-                new WebClient().DownloadString($"https://orbitdev.tech/FBP/output-buffer.php?userId={c.d_ownerId}&dId={guildID}&code={Faction_Discord.Discord_Commands.sessionID}&data=Minecraft ServerIP is null");
+                new WebClient().DownloadString($"https://orbitdev.tech/FBP/output-buffer.php?userId={c.d_ownerId}&dId={guildID}&code={Server_Socket.SocketReader.socketReturn(guildID).sessionId}&data=Minecraft ServerIP is null");
             Settings.ServerIP = c.m_serverip;
             Settings.LoginMethod = c.m_logintype;
             Settings.MCSettings_RenderDistance = 2;
             if (c.m_version == "null")
-                new WebClient().DownloadString($"https://orbitdev.tech/FBP/output-buffer.php?userId={c.d_ownerId}&dId={guildID}&code={Faction_Discord.Discord_Commands.sessionID}&data=Minecraft Version is null");
+                new WebClient().DownloadString($"https://orbitdev.tech/FBP/output-buffer.php?userId={c.d_ownerId}&dId={guildID}&code={Server_Socket.SocketReader.socketReturn(guildID).sessionId}&data=Minecraft Version is null");
             Settings.ServerVersion = c.m_version;
             if (Settings.ConsoleTitle != "")
             {
